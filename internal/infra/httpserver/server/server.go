@@ -37,6 +37,7 @@ func New(container *container.Container, config env.Config) *HTTPServer {
 	//Customer Routes
 	baseRouter.Post("/customer", adapt(controller.NewCustomerCreateRestController(container)))
 	baseRouter.Get("/customer", adapt(controller.NewCustomerFindRestController(container)))
+	baseRouter.Get("/customer/:customerId", adapt(controller.NewCustomerFindOneRestController(container)))
 
 	app.Use(middleware.NewNotFound())
 

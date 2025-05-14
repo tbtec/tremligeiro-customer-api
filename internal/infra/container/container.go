@@ -12,7 +12,7 @@ import (
 
 type Container struct {
 	Config             env.Config
-	TremLigeiroDB      *mongo.Database
+	TremLigeiroDB      *mongo.Collection
 	CustomerRepository repository.ICustomerRepository
 }
 
@@ -45,7 +45,7 @@ func (container *Container) Start() error {
 func (container *Container) Stop() error {
 	db := container.TremLigeiroDB
 
-	defer db.Client().Disconnect(context.Background())
+	defer db.Database().Client().Disconnect(context.Background())
 	return nil
 }
 

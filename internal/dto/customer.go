@@ -20,6 +20,10 @@ type FindCustomer struct {
 	DocumentNumber string `json:"documentNumber" validate:"required"`
 }
 
+type FindOneCustomer struct {
+	CustomerId string `json:"customerId" validate:"required"`
+}
+
 type Customer struct {
 	CustomerId     string    `json:"id"`
 	Name           string    `json:"name"`

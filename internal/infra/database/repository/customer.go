@@ -17,10 +17,10 @@ type ICustomerRepository interface {
 }
 
 type CustomerRepository struct {
-	database *mongo.Database
+	database *mongo.Collection
 }
 
-func NewCustomerRepository(database *mongo.Database) ICustomerRepository {
+func NewCustomerRepository(database *mongo.Collection) ICustomerRepository {
 	return &CustomerRepository{
 		database: database,
 	}
@@ -28,11 +28,7 @@ func NewCustomerRepository(database *mongo.Database) ICustomerRepository {
 
 func (repository *CustomerRepository) Create(ctx context.Context, customer *model.Customer) error {
 
-	client := repository.database.Client()
-	repository.database = client.Database(repository.database.Name())
-	collection := repository.database.Collection("customer")
-
-	result, err := collection.InsertOne(context.Background(), &customer)
+	result, err := repository.database.InsertOne(context.Background(), &customer)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,14 +41,16 @@ func (repository *CustomerRepository) Create(ctx context.Context, customer *mode
 func (repository *CustomerRepository) FindOne(ctx context.Context, id string) (*model.Customer, error) {
 	customer := &model.Customer{}
 
-	/*result := repository.database.DB.WithContext(ctx).Where("customer_id = ?", id).First(&customer)
+	err := repository.database.FindOne(ctx, bson.M{"id": id}).Decode(&customer)
 
-	if result.Error != nil {
-		if result.Error.Error() == "record not found" {
-			return nil, nil
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, fmt.Errorf("record not found")
+			//return nil, nil
 		}
-		return nil, result.Error
-	}*/
+		log.Printf("Erro ao buscar cliente: %v", err)
+		return nil, err
+	}
 
 	return customer, nil
 }
@@ -61,17 +59,12 @@ func (repository *CustomerRepository) FindByDocumentNumber(ctx context.Context, 
 
 	customer := &model.Customer{}
 
-	//client := repository.database.Client()
-
-	//repository.database = client.Database("tremligeiro")
-
-	collection := repository.database.Collection("customer")
-
-	err := collection.FindOne(ctx, bson.M{"documentnumber": documentNumber}).Decode(&customer)
+	err := repository.database.FindOne(ctx, bson.M{"documentnumber": documentNumber}).Decode(&customer)
 
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return nil, nil
+			return nil, fmt.Errorf("record not found")
+			//return nil, nil
 		}
 		log.Printf("Erro ao buscar cliente: %v", err)
 		return nil, err

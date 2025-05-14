@@ -19,7 +19,7 @@ type MongoConf struct {
 	Port           int
 }
 
-func New(conf MongoConf) (*mongo.Database, error) {
+func New(conf MongoConf) (*mongo.Collection, error) {
 
 	//uri := fmt.Sprintf("mongodb://%s:%s@%s:%d/%s", conf.User, conf.Pass, conf.Url, conf.Port, conf.DbName)
 	uri := fmt.Sprintf("mongodb://%s:%s@%s:%d/", conf.User, conf.Pass, conf.Url, conf.Port)
@@ -46,7 +46,7 @@ func New(conf MongoConf) (*mongo.Database, error) {
 
 	db.CreateCollection(context.Background(), conf.CollectionName)
 
-	return db, nil
+	return db.Collection(conf.CollectionName), nil
 }
 
 func Migrate(conf MongoConf) error {
