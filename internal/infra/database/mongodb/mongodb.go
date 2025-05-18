@@ -7,7 +7,6 @@ import (
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 type MongoConf struct {
@@ -34,17 +33,9 @@ func New(conf MongoConf) (*mongo.Collection, error) {
 		return nil, err
 	}
 
-	err = client.Ping(context.Background(), readpref.Primary())
-	if err != nil {
-		slog.ErrorContext(context.Background(), "Erro ao conectar ao MongoDB:", err.Error())
-		return nil, err
-	}
-
-	slog.InfoContext(context.Background(), "✅ Conexão com o MongoDB realizada com sucesso")
-
 	db := client.Database(conf.DbName)
 
-	db.CreateCollection(context.Background(), conf.CollectionName)
+	slog.InfoContext(context.Background(), "✅ Conexão com o MongoDB realizada com sucesso")
 
 	return db.Collection(conf.CollectionName), nil
 }

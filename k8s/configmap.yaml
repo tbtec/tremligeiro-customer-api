@@ -9,6 +9,6 @@ data:
   MONGO_DB: "tremligeiro_customer_db"
   MONGO_PORT: "27017"
   MONGO_USER: "admintremligeiro"
-  MONGO_HOST: "tremligeiro-customer-db.cluster-coa56uwkhsyb.us-east-1.docdb.amazonaws.com"
+  MONGO_HOST: "tremligeiro-product-db.cluster-coa56uwkhsyb.us-east-1.docdb.amazonaws.com"
   PAYMENT_URL: "https://api.mercadopago.com/instore/orders/qr/seller/collectors/202978706/pos/SUC001POS001/qrs"
   
