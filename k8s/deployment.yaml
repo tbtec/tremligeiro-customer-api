@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tremligeiro
+  name: tremligeiro-customer
   namespace: tremligeiro
 spec:
   selector:
     matchLabels:
-      app: tremligeiro     
+      app: tremligeiro-customer
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -17,14 +17,14 @@ spec:
       annotations:
         kubernetes.io/change-cause: "UPDATE"
       labels:
-        app: tremligeiro
+        app: tremligeiro-customer
         environment: "dev"
         version: "1.0.0"
     spec:
       containers:
-        - name: tremligeiro
-          image: tbtec/tremligeiro:1.0.0
-          imagePullPolicy: Never
+        - name: tremligeiro-customer
+          image: tbtec/tremligeiro-customer:1.0.0
+          imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 8080
@@ -40,9 +40,9 @@ spec:
             successThreshold: 1
           envFrom:
             - configMapRef:
-                name: tremligeiro-config
+                name: tremligeiro-customer-config
             - secretRef:
-                name: tremligeiro-secret
+                name: tremligeiro-customer-secret
           resources:
             requests:
               memory: "80Mi"
