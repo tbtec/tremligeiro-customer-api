@@ -16,12 +16,18 @@ type MongoConf struct {
 	User           string
 	Pass           string
 	Port           int
+	CompleteUrl    string
+	UseUrl         bool
 }
 
 func New(conf MongoConf) (*mongo.Collection, error) {
-
-	//uri := fmt.Sprintf("mongodb://%s:%s@%s:%d/%s", conf.User, conf.Pass, conf.Url, conf.Port, conf.DbName)
-	uri := fmt.Sprintf("mongodb://%s:%s@%s:%d/", conf.User, conf.Pass, conf.Url, conf.Port)
+	var uri string
+	if conf.UseUrl {
+		slog.InfoContext(context.Background(), "Using MongoDB Complete URL")
+		uri = conf.CompleteUrl
+	} else {
+		uri = fmt.Sprintf("mongodb+srv://%s:%s@%s:%d/", conf.User, conf.Pass, conf.Url, conf.Port)
+	}
 
 	slog.InfoContext(context.Background(), "Conectando ao MongoDB...")
 

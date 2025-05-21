@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tremligeiro
+  name: tremligeiro-customer
   namespace: tremligeiro
   labels:
     app: tremligeiro-customer
@@ -14,4 +14,4 @@ spec:
       targetPort: 8080
       protocol: "TCP"
   selector:
-    app: tremligeiro
+    app: tremligeiro-customer

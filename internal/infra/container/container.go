@@ -57,5 +57,7 @@ func getMongoDBConf(config env.Config) mongodb.MongoConf {
 		Port:           config.DbPort,
 		DbName:         config.DbName,
 		CollectionName: config.CollectionName,
+		CompleteUrl:    config.DbUrl,
+		UseUrl:         config.DBUseUrl,
 	}
 }
