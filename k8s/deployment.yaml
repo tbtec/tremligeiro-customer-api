@@ -21,6 +21,7 @@ spec:
         environment: "dev"
         version: "1.0.0"
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: tremligeiro-customer
           image: tbtec/tremligeiro-customer:1.0.0
